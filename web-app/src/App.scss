@@ -1,0 +1,75 @@
+@mixin vertical-gap($gap: 1rem) {
+  & > *:not(:last-child) {
+    margin-bottom: $gap;
+  }
+}
+
+@mixin horizontal-gap($gap: 1rem) {
+  & > *:not(:last-child) {
+    margin-right: $gap;
+  }
+}
+
+.App {
+  padding: 0 2rem;
+
+  h1 {
+    text-align: center;
+    margin: 2rem 0;
+  }
+
+  h3 {
+    margin-bottom: 1rem;
+  }
+
+  .card {
+    height: 100%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+
+    &:hover {
+      box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    .header {
+      background-color: #fff176;
+      padding: 1rem;
+    }
+
+    .body {
+      padding: 1rem 0 1rem 2rem;
+      @include vertical-gap(2rem);
+
+      & > div {
+        max-width: 100%;
+        max-height: 100%;
+      }
+    }
+  }
+
+  .batteries-container {
+    .battery {
+      .grid {
+        display: flex;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+
+        .grid-item {
+          padding: 1rem;
+          flex: 1 1 auto;
+          min-width: 300px;
+          max-width: 700px;
+          max-height: 300px;
+          height: 300px;
+        }
+
+        .water-level {
+          .inner-container {
+            display: flex;
+            @include horizontal-gap(1rem);
+          }
+        }
+      }
+    }
+  }
+}
