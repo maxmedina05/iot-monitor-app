@@ -29,6 +29,8 @@ const batteryWaterLevelCharts = (levels) =>
   ))
 
 export default class App extends React.Component {
+  apiCallInterval = null
+
   constructor(props) {
     super(props)
     this.state = {
@@ -39,22 +41,28 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
-    fetch('/batteries')
-      .then((res) => res.json())
-      .then(
-        (res) => {
-          this.setState({
-            isLoaded: true,
-            items: res,
-          })
-        },
-        (error) => {
-          this.setState({
-            isLoaded: true,
-            error,
-          })
-        },
-      )
+    this.apiCallInterval = setInterval(() => {
+      fetch('/batteries')
+        .then((res) => res.json())
+        .then(
+          (res) => {
+            this.setState({
+              isLoaded: true,
+              items: res,
+            })
+          },
+          (error) => {
+            this.setState({
+              isLoaded: true,
+              error,
+            })
+          },
+        )
+    }, 5000)
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.apiCallInterval)
   }
 
   render() {
@@ -69,8 +77,10 @@ export default class App extends React.Component {
 
           <div className="batteries-container">
             {items.map((battery, idx) => (
-              <div className="battery" key={`battery_${idx}`}>
-                <h3>Batería #{idx + 1}</h3>
+              <div className="battery" key={`battery_${battery.device}`}>
+                <h3>
+                  Batería #{idx + 1} | {battery.device}
+                </h3>
 
                 <div className="grid">
                   <div className="grid-item">
@@ -88,6 +98,15 @@ export default class App extends React.Component {
                           <strong>Temperatura:</strong> {battery.temperature}
                           &#8451;
                         </p>
+
+                        <div
+                          className={!battery.connected ? 'disconnected-state' : ''}
+                        >
+                          <p>
+                            <strong>Estado:</strong>{' '}
+                            {battery.connected ? 'Conectado' : 'Desconectado'}
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </div>
