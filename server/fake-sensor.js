@@ -13,6 +13,7 @@ client.on('connect', () => {
 })
 
 // device=fake-battery&voltage=11.5&current=1.35&temperature=35&water=80,80,50
+// mosquitto_pub -h broker.hivemq.com -t medma/iot-app/battery-monitor -m "device=max-battery&voltage=11.5&current=1.35&temperature=35&water=80,80,50"
 function sendFakeSignal() {
   current = goingUp ? current + 0.05 : current - 0.05
 

@@ -8,6 +8,7 @@ const MQTT_BROKER = process.env.MQTT_BROKER || 'mqtt://broker.hivemq.com'
 const client = mqtt.connect(MQTT_BROKER)
 
 const MQTT_TOPIC = 'medma/iot-app/battery-monitor'
+const HELLO_TIME_DURATION = 30
 
 let BATTERIES = [
   {
@@ -32,7 +33,7 @@ setInterval(() => {
         ...arr,
         {
           ...item,
-          connected: diff < 15,
+          connected: diff < HELLO_TIME_DURATION,
         },
       ]
     }
